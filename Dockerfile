@@ -6,7 +6,7 @@ COPY .mvn/ .mvn/
 COPY mvnw pom.xml ./
 COPY src ./src
 
-RUN chmod +x mvnw && ./mvnw clean package -DskipTests
+RUN chmod +x mvnw && ./mvnw clean package -Dmaven.test.skip=true
 
 FROM eclipse-temurin:25-jre
 WORKDIR /app
