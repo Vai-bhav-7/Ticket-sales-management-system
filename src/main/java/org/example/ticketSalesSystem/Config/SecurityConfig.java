@@ -39,6 +39,7 @@ public class SecurityConfig {
                         // Public endpoints
                         .requestMatchers(
                                 "/",
+                                "/error",
                                 "/api/users/register",
                                 "/api/users/login"
                         ).permitAll()
