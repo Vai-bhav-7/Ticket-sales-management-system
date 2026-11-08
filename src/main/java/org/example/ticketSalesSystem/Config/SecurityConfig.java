@@ -1,8 +1,10 @@
+
 package org.example.ticketSalesSystem.config;
 
 import org.example.ticketSalesSystem.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,33 +36,38 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
+                        // Public endpoints
                         .requestMatchers(
+                                "/",
                                 "/api/users/register",
                                 "/api/users/login"
                         ).permitAll()
 
-                        // Anyone authenticated can view events
+                        // Authenticated users can view events
                         .requestMatchers(
-                                org.springframework.http.HttpMethod.GET,
+                                HttpMethod.GET,
                                 "/api/events/**"
                         ).authenticated()
 
-                        // Only ADMIN can modify events
+                        // Only ADMIN can create events
                         .requestMatchers(
-                                org.springframework.http.HttpMethod.POST,
+                                HttpMethod.POST,
                                 "/api/events/**"
                         ).hasRole("ADMIN")
 
+                        // Only ADMIN can update events
                         .requestMatchers(
-                                org.springframework.http.HttpMethod.PUT,
+                                HttpMethod.PUT,
                                 "/api/events/**"
                         ).hasRole("ADMIN")
 
+                        // Only ADMIN can delete events
                         .requestMatchers(
-                                org.springframework.http.HttpMethod.DELETE,
+                                HttpMethod.DELETE,
                                 "/api/events/**"
                         ).hasRole("ADMIN")
 
+                        // All remaining endpoints require authentication
                         .anyRequest().authenticated()
                 )
 
